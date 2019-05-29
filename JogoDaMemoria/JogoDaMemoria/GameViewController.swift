@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class GameViewController: UIViewController {
     
     lazy var game = Game(numberOfPairOfCards: buttonsArray.count / 2)
         
@@ -17,13 +17,11 @@ class ViewController: UIViewController {
             flipCountLabel.text = "Flips: \(flipCount)"
         }
         willSet {
-            print("vai receber \(newValue)")
+//            print("vai receber \(newValue)")
         }
     }
     
-    var emojis = [Int: String]()
-    var emojisOptions = ["🐱", "🐶", "🐸"]
-//    , "🐭"]
+    var cardTextProvider: CardTextProvider!
     
     @IBOutlet var buttonsArray: [UIButton]!
     @IBOutlet weak var flipCountLabel: UILabel!
@@ -49,7 +47,7 @@ class ViewController: UIViewController {
 //            } else
             if card.isFaceUp() {
                 button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-                button.setTitle(emoji(for: card), for: UIControl.State.normal)
+                button.setTitle(self.cardTextProvider.text(for: card.identifier), for: UIControl.State.normal)
 
             } else {
                 button.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
@@ -58,16 +56,4 @@ class ViewController: UIViewController {
         }
     }
     
-    func emoji(for card: Card) -> String {
-        
-        if let emoji = emojis[card.identifier] {
-            return emoji
-        }
-        
-        let emoji = emojisOptions.removeRandom()
-        
-        emojis[card.identifier] = emoji
-
-        return emoji
-    }
 }
